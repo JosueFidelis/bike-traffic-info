@@ -35,25 +35,19 @@ export default {
       .catch(error => {
         console.log('There was an error:', error.response)
       })
-    BikeServices.getTest(3)
-      .then(response => {
-        this.mean = response.data['name']
-      })
-      .catch(error => {
-        console.log('There was an error:', error.response)
-      })
-    BikeServices.getTest(4)
-      .then(response => {
-        this.info = response.data['name']
-      })
-      .catch(error => {
-        console.log('There was an error:', error.response)
-      })
+  }, computed: {
+    newMean() {
+    var source = new EventSource("http://localhost:9090");
+    source.onmessage = event => {
+            this.mean = event.data
+            this.info = event.data
+    };
+    return this.mean
+    }
+    
   }
 }
 </script>
-
-
 
 
 <template>
@@ -82,7 +76,7 @@ export default {
       </template>
       <template #heading>Testing</template>
 
-      <a>{{ mean }}</a>
+      <a>{{ newMean }}</a>
     </WelcomeItem>
 
     <WelcomeItem>
@@ -91,7 +85,7 @@ export default {
       </template>
       <template #heading>Testing</template>
 
-      <a>{{ info }}</a>
+      <a>{{ newMean }}</a>
     </WelcomeItem>
 
   </div>
