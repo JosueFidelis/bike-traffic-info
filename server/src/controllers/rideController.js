@@ -16,8 +16,11 @@ const getTopStationNamesInLastHour = async (currTime, stationType) => {
   const hourAgo = new Date(currTime - 60 * 60 * 1000);
   const topStations = await Ride.aggregate([
     {
+      $match: { EndTime: { $gte: hourAgo } } // Filter rides that ended in the last hour
+    },
+    {
       $group: {
-        _id: '$stationType',
+        _id: '$'+stationType,
         count: { $sum: 1 }
       }
     },
@@ -28,8 +31,10 @@ const getTopStationNamesInLastHour = async (currTime, stationType) => {
       $limit: 5 // Limit to top 5 stations
     }
   ]);
-  console.log(topStations);
-  return topStations;
+
+  const topStationNames = topStations.map(station => station._id);
+  console.log(topStationNames);
+  return topStationNames;
 }
 
 module.exports = {
