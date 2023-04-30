@@ -4,10 +4,10 @@ const RideSchema = mongoose.Schema({
     TripId: String,
     TripDuration: Number,
     StartStationId: String,
-    StartTime: String,
+    StartTime: Date,
     StartStationName: String,
     EndStationId: String,
-    EndTime: String,
+    EndTime: Date,
     EndStationName: String,
     BikeId: String
 });
