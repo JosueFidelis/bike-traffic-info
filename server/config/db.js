@@ -3,11 +3,10 @@ const config = require('./config');
 
 const connect = async () => {
   try {
+    console.log(config.DB_URI);
     await mongoose.connect(config.DB_URI, {
       useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-      useFindAndModify: false,
+      useUnifiedTopology: true
     });
     console.log('MongoDB connected');
   } catch (err) {

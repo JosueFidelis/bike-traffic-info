@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const user = process.env.USER;
+const user = process.env.USERDB;
 const password = process.env.PASSWORD;
 
 module.exports = {

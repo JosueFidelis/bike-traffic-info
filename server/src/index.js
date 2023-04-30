@@ -1,22 +1,18 @@
 const amqp = require("amqplib/callback_api");
 const mongoose = require("mongoose");
-const Ride = require("./models/Ride");
-const db = require('..config/db');
+const {getAllRides, createRide} = require("./controllers/rideController");
+const dbConnect = require('../config/db');
 
-db.connect();
+startDb();
 
 amqp.connect("amqp://localhost", (error0, connection) => {
   checkForError(error0);
-  mongoose
-    .connect("mongodb://localhost:27017/test")
-    .then((res) => {
-      console.log("MongoDB successfully connected");
-      startConsumer(connection);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  startConsumer(connection);
 });
+
+async function startDb() {
+  await dbConnect();
+}
 
 const startConsumer = (connection) => {
   connection.createChannel((error1, channel) => {
@@ -32,10 +28,8 @@ const startConsumer = (connection) => {
       queue,
       async (msg) => {
         console.log(" Novo pedido recebido: %s", msg.content.toString());
-        let newRide = JSON.parse(msg.content.toString());
-        delete newRide["User Type"]; 
-        const ride = new Ride(newRide);
-        await ride.save();
+        createRide(msg.content.toString());
+        getAllRides().then(res => console.log(res));
       },
       {
         noAck: true,

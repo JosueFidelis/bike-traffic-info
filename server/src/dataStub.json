@@ -1,12 +1,12 @@
 {
-    "Trip Id": "14810489",
-    "Trip  Duration": 1365,
-    "Start Station Id": "7208",
-    "Start Time": "01/03/2022 13:07",
-    "Start Station Name": "80 Clinton St (North of College)",
-    "End Station Id": "7534",
-    "End Time": "01/03/2022 13:30",
-    "End Station Name": "Walnut Ave / Queen St W",
-    "Bike Id": "282",
-    "User Type": "Casual Member"
+    "TripId": "14810489",
+    "TripDuration": 1365,
+    "StartStationId": "7208",
+    "StartTime": "01/03/2022 13:07",
+    "StartStationName": "80 Clinton St (North of College)",
+    "EndStationId": "7534",
+    "EndTime": "01/03/2022 13:30",
+    "EndStationName": "Walnut Ave / Queen St W",
+    "BikeId": "282",
+    "UserType": "Casual Member"
 }
