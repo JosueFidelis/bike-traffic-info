@@ -25,7 +25,6 @@ const startConsumer = (connection) => {
     checkForError(error1);
 
     let queue = "rides";
-    let msgContent = '';
 
     channel.assertQueue(queue, {
       durable: true,

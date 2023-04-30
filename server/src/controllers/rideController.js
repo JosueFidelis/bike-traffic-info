@@ -41,20 +41,20 @@ const getTopStationNamesInLastHour = async (currTime, stationType) => {
 
 const getStationFlowInLastHour = async (req, res) => {
   //currTime, stationType, stationName
-  const stationName = req.query.stationName
+  const stationName = req.query.station
   const hourAgo = new Date(timeNow - 60 * 60 * 1000);
 
   const endCondition = {
     StartTime: { $gte: hourAgo },
   };
   endCondition['StartStationName'] = stationName;
-  const stationDepartures = await Ride.countDocuments(condition);
+  const stationDepartures = await Ride.countDocuments(endCondition);
   
   const startCondition = {
     EndTime: { $gte: hourAgo },
   };
   startCondition['EndStationName'] = stationName;
-  const stationArrivals = await Ride.countDocuments(condition);
+  const stationArrivals = await Ride.countDocuments(startCondition);
 
   return res.json({arrivals: stationArrivals, departures: stationDepartures});
 };
