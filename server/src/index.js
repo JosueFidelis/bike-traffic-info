@@ -1,5 +1,8 @@
+const express = require('express');
+const routes = require('./routes');
+const cors = require('cors');
 const amqp = require("amqplib/callback_api");
-const { createRide } = require("./controllers/rideController");
+const { createRide, getTopStationNamesInLastHour } = require("./controllers/rideController");
 const dbConnect = require('../config/db');
 
 startDb();
@@ -59,3 +62,11 @@ const checkForError = (err) => {
 async function startDb () {
   await dbConnect();
 }
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+app.use(routes);
+
+app.listen(3333, () => console.log('listening to port 3333'));
