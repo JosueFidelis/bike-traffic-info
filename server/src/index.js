@@ -1,6 +1,6 @@
 const amqp = require("amqplib/callback_api");
 const mongoose = require("mongoose");
-const {getAllRides, createRide} = require("./controllers/rideController");
+const {getAllRides, createRide, getTopStationNamesInLastHour} = require("./controllers/rideController");
 const dbConnect = require('../config/db');
 
 startDb();
@@ -10,10 +10,6 @@ amqp.connect("amqp://localhost", (error0, connection) => {
   checkForError(error0);
   startConsumer(connection);
 });
-
-const startDb = async () => {
-  await dbConnect();
-}
 
 const normalizeJsonData = (jsonString) => {
   let json = JSON.parse(jsonString);
@@ -40,7 +36,7 @@ const startConsumer = (connection) => {
         let normalizedJson = normalizeJsonData(msg.content.toString())
         currTime = normalizedJson.EndTime;
         createRide(normalizedJson);
-        //getAllRides().then(res => console.log(res));
+        await getTopStationNamesInLastHour(currTime, 'EndStationName');
       },
       {
         noAck: true,
@@ -56,4 +52,8 @@ const checkForError = (err) => {
     console.error(err);
     throw err;
   }
+}
+
+async function startDb () {
+  await dbConnect();
 }
