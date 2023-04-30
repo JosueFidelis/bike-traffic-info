@@ -1,6 +1,5 @@
 const amqp = require("amqplib/callback_api");
-const mongoose = require("mongoose");
-const {getAllRides, createRide, getTopStationNamesInLastHour, getMeanDurationBetweenStations} = require("./controllers/rideController");
+const { createRide } = require("./controllers/rideController");
 const dbConnect = require('../config/db');
 
 startDb();
@@ -36,8 +35,10 @@ const startConsumer = (connection) => {
         let normalizedJson = normalizeJsonData(msg.content.toString())
         currTime = normalizedJson.EndTime;
         createRide(normalizedJson);
-        await getMeanDurationBetweenStations(normalizedJson.StartStationName, normalizedJson.EndStationName)
-        //await getTopStationNamesInLastHour(currTime, 'EndStationName');
+        await getTopStationNamesInLastHour(currTime, 'StartStationName');
+        await getTopStationNamesInLastHour(currTime, 'EndStationName');
+        //let aa = (await getTopStationNamesInLastHour(currTime, 'EndStationName'))[0];
+        //await getStationFlowInLastHour(currTime,'EndStationName', aa);
       },
       {
         noAck: true,

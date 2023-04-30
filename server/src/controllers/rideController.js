@@ -1,5 +1,7 @@
 const Ride = require("../models/ride");
 
+let timeNow = null
+
 const getAllRides = async () => {
   const rides = await Ride.find();
   return rides;
@@ -13,24 +15,49 @@ const createRide = async (newRide) => {
 };
 
 const getTopStationNamesInLastHour = async (currTime, stationType) => {
+  timeNow = currTime
   const hourAgo = new Date(currTime - 60 * 60 * 1000);
   const topStations = await Ride.aggregate([
     {
+      $match: { EndTime: { $gte: hourAgo } },
+    },
+    {
       $group: {
-        _id: '$stationType',
-        count: { $sum: 1 }
-      }
+        _id: "$" + stationType,
+        count: { $sum: 1 },
+      },
     },
     {
-      $sort: { count: -1 } // Sort by count in descending order
+      $sort: { count: -1 },
     },
     {
-      $limit: 5 // Limit to top 5 stations
-    }
+      $limit: 5,
+    },
   ]);
-  console.log(topStations);
-  return topStations;
-}
+
+  const topStationNames = topStations.map((station) => station._id);
+  return topStationNames;
+};
+
+const getStationFlowInLastHour = async (req, res) => {
+  //currTime, stationType, stationName
+  const stationName = req.query.stationName
+  const hourAgo = new Date(timeNow - 60 * 60 * 1000);
+
+  const endCondition = {
+    StartTime: { $gte: hourAgo },
+  };
+  endCondition['StartStationName'] = stationName;
+  const stationDepartures = await Ride.countDocuments(condition);
+  
+  const startCondition = {
+    EndTime: { $gte: hourAgo },
+  };
+  startCondition['EndStationName'] = stationName;
+  const stationArrivals = await Ride.countDocuments(condition);
+
+  return res.json({arrivals: stationArrivals, departures: stationDepartures});
+};
 
 const getMeanDurationBetweenStations = async (req, res) => {
   const startStationName = req.query.startStationName
@@ -68,5 +95,6 @@ module.exports = {
   getAllRides,
   createRide,
   getTopStationNamesInLastHour,
-  getMeanDurationBetweenStations
+  getMeanDurationBetweenStations,
+  getStationFlowInLastHour
 };
