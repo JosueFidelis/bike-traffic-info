@@ -33,6 +33,10 @@ i {
   color: var(--color-text);
 }
 
+h2 {
+  color: hsla(160, 100%, 37%, 1);
+}
+
 h3 {
   font-size: 1.2rem;
   font-weight: 500;
