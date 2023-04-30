@@ -14,6 +14,9 @@ import BikeServices from '@/services/Service.js'
 export default {
   data() {
     return {
+      meanStation1 :1,
+      meanStation2 :2,
+      infoStation :3,
       most: [],
       least: [],
       mean: [],
@@ -33,25 +36,30 @@ export default {
         this.least = JSON.parse(event.data)['stations']
       };
       return this.least
+    },
+    newMean(){
+    BikeServices.getTest(parseInt(this.meanStation1) + parseInt(this.meanStation2))
+      .then(response => {
+        this.mean = response.data['name'] 
+      })
+      .catch(error => {
+        console.log('There was an error:', error.response)
+      })
+        return this.mean
+    },
+    newInfo(){
+    BikeServices.getTest(parseInt(this.infoStation))
+      .then(response => {
+        this.info = response.data['name'] 
+      })
+      .catch(error => {
+        console.log('There was an error:', error.response)
+      })
+        return this.info
     }
 
   },
-  created() {
-    BikeServices.getTest(1)
-      .then(response => {
-        this.mean = response.data['name']
-      })
-      .catch(error => {
-        console.log('There was an error:', error.response)
-      })
-    BikeServices.getTest(2)
-      .then(response => {
-        this.info = response.data['name']
-      })
-      .catch(error => {
-        console.log('There was an error:', error.response)
-      })
-  }
+  created() {}
 }
 </script>
 
@@ -88,18 +96,26 @@ export default {
       <template #icon>
         <SupportIcon />
       </template>
-      <template #heading>Estimated(mean) travel time between stations </template>
+      <template #heading>
+        Estimated(mean) travel time between
+        <input type="text" v-model="meanStation1" placeholder="Station 1" />
+        and
+        <input type="text" v-model="meanStation2" placeholder="Station 2" />
+      </template>
 
-      <h2>{{ mean }}</h2>
+      <h2>{{ newMean }}</h2>
     </WelcomeItem>
 
     <WelcomeItem>
       <template #icon>
         <DocumentationIcon />
       </template>
-      <template #heading>Latest departures and arrivals in the station</template>
+      <template #heading>
+        Latest departures and arrivals in the station
+        <input type="text" v-model="infoStation" placeholder="Station" />
+      </template>
 
-      <h2>{{ info }}</h2>
+      <h2>{{ newInfo }}</h2>
     </WelcomeItem>
 
   </div>
