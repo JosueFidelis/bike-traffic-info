@@ -72,11 +72,11 @@ export default {
       </template>
       <template #heading>Station with most arrivals last hour </template>
 
-      <h2>1  {{ newMost[0] }}</h2>
-      <h2>2  {{ newMost[1] }}</h2>
-      <h2>3  {{ newMost[2] }}</h2>
-      <h2>4  {{ newMost[3] }}</h2>
-      <h2>5  {{ newMost[4] }}</h2>
+      <h2>1. {{ newMost[0] }}</h2>
+      <h2>2. {{ newMost[1] }}</h2>
+      <h2>3. {{ newMost[2] }}</h2>
+      <h2>4. {{ newMost[3] }}</h2>
+      <h2>5. {{ newMost[4] }}</h2>
     </WelcomeItem>
 
     <WelcomeItem>
@@ -85,11 +85,11 @@ export default {
       </template>
       <template #heading>Station with most departures last hour </template>
 
-      <h2>1  {{ newLeast[0] }}</h2>
-      <h2>2  {{ newLeast[1] }}</h2>
-      <h2>3  {{ newLeast[2] }}</h2>
-      <h2>4  {{ newLeast[3] }}</h2>
-      <h2>5  {{ newLeast[4] }}</h2>
+      <h2>1. {{ newLeast[0] }}</h2>
+      <h2>2. {{ newLeast[1] }}</h2>
+      <h2>3. {{ newLeast[2] }}</h2>
+      <h2>4. {{ newLeast[3] }}</h2>
+      <h2>5. {{ newLeast[4] }}</h2>
     </WelcomeItem>
 
     <WelcomeItem>
@@ -97,10 +97,10 @@ export default {
         <SupportIcon />
       </template>
       <template #heading>
-        Estimated(mean) travel time between
-        <input type="text" v-model="meanStation1" placeholder="Station 1" />
+        Mean time between stations<br>
+        <input class="bikeInput1" type="text" v-model="meanStation1" placeholder="University Ave / Elm St" />
         and
-        <input type="text" v-model="meanStation2" placeholder="Station 2" />
+        <input class="bikeInput2" type="text" v-model="meanStation2" placeholder="University Ave / Elm St" />
       </template>
 
       <h2>{{ newMean }}</h2>

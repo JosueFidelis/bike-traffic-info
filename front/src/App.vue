@@ -72,8 +72,6 @@ nav a:first-of-type {
   }
 
   header .wrapper {
-    /* font-family:Arial, Helvetica, sans-serif; */
-
     display: flex;
     place-items: flex-start;
     flex-wrap: wrap;

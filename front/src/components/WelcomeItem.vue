@@ -13,6 +13,37 @@
 </template>
 
 <style scoped>
+.bikeInput1 {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--color-heading);
+  width: 220px;
+  background-color: rgba(0, 0, 0, 0.04);
+  border-radius: 5px;
+}
+
+.bikeInput2 {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--color-heading);
+  width: 220px;
+  background-color: rgba(0, 0, 0, 0.04);
+  border-radius: 5px;
+  margin-left: 10px;
+}
+
+::placeholder {
+  color: rgba(0, 0, 0, 0.2);
+}
+
 .item {
   margin-top: 2rem;
   display: flex;
