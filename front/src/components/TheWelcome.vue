@@ -26,6 +26,7 @@ export default {
     newMost() {
       var source = new EventSource("http://localhost:9090");
       source.onmessage = event => {
+        console.log(event.data)
         this.most = JSON.parse(event.data)['stations']
       };
       return this.most
@@ -85,11 +86,11 @@ export default {
       </template>
       <template #heading>Station with most departures last hour </template>
 
-      <h2>1. {{ newLeast[0] }}</h2>
-      <h2>2. {{ newLeast[1] }}</h2>
-      <h2>3. {{ newLeast[2] }}</h2>
-      <h2>4. {{ newLeast[3] }}</h2>
-      <h2>5. {{ newLeast[4] }}</h2>
+      <h2>1. {{ newLeast[5] }}</h2>
+      <h2>2. {{ newLeast[6] }}</h2>
+      <h2>3. {{ newLeast[7] }}</h2>
+      <h2>4. {{ newLeast[8] }}</h2>
+      <h2>5. {{ newLeast[9] }}</h2>
     </WelcomeItem>
 
     <WelcomeItem>
@@ -115,8 +116,8 @@ export default {
         <input class="bikeInput1" type="text" v-model="infoStation" placeholder="University Ave / Elm St" v-on:input="getNewInfo" />
       </template>
 
-      <h2>{{ info.arrivals }}</h2>
-      <h2>{{ info.departures }}</h2>
+      <h2>{{ info.arrivals + " arrivals"}}</h2>
+      <h2>{{ info.departures + " departures" }}</h2>
     </WelcomeItem>
 
   </div>

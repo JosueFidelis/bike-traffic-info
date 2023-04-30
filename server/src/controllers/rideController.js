@@ -33,11 +33,13 @@ const getTopStationNamesInLastHour = async (currTime, stationType) => {
       $sort: { count: -1 },
     },
     {
-      $limit: 5,
+      $limit: 10,
     },
   ]);
-
-  const topStationNames = topStations.map((station) => station._id);
+  const topStationNames = topStations
+  .filter((station) => station._id && station._id !== "NULL") // Remove os valores null e vazios
+  .map((station) => station._id)
+  .slice(0, 5);
   return topStationNames;
 };
 

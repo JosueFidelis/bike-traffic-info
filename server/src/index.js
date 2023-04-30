@@ -34,7 +34,7 @@ function createSSEServer () {
     });
     emitter.on("newRide", (topStations) => {
       console.log("Sent:"+ topStations.stations);
-      res.write("data: " + topStations + "\n\n");
+      res.write("data: " + JSON.stringify(topStations) + "\n\n");
     });
   });
   sseServer.listen(9090);
