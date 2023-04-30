@@ -27,9 +27,9 @@ const startConsumer = (connection) => {
     channel.consume(
       queue,
       async (msg) => {
-        console.log(" Novo pedido recebido: %s", msg.content.toString());
+        console.log(" Nova ride recebida");
         createRide(msg.content.toString());
-        getAllRides().then(res => console.log(res));
+        //getAllRides().then(res => console.log(res));
       },
       {
         noAck: true,

@@ -10,7 +10,7 @@ const createRide = async (msg) => {
   delete newRide["UserType"];
 
   const ride = new Ride(newRide);
-  await ride.save().then(console.log("Saved new Ride"));
+  await ride.save().then(console.log(" Saved new Ride: " + newRide["TripId"]));
 };
 
 module.exports = {
