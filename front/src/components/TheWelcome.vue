@@ -23,8 +23,7 @@ export default {
     newMost() {
       var source = new EventSource("http://localhost:9090");
       source.onmessage = event => {
-        console.log(event.data)
-        this.most = JSON.parse(event.data)['stations'][4]
+        this.most = JSON.parse(event.data)['stations']
       };
       return this.most
     },
@@ -65,7 +64,11 @@ export default {
       </template>
       <template #heading>Station with most arrivals last hour </template>
 
-      <h2>{{ newMost }}</h2>
+      <h2>1- {{ newMost[0] }}</h2>
+      <h2>2- {{ newMost[1] }}</h2>
+      <h2>3- {{ newMost[2] }}</h2>
+      <h2>4- {{ newMost[3] }}</h2>
+      <h2>5- {{ newMost[4] }}</h2>
     </WelcomeItem>
 
     <WelcomeItem>
@@ -74,7 +77,11 @@ export default {
       </template>
       <template #heading>Station with most departures last hour </template>
 
-      <h2>{{ newLeast }}</h2>
+      <h2>1- {{ newLeast[0] }}</h2>
+      <h2>2- {{ newLeast[1] }}</h2>
+      <h2>3- {{ newLeast[2] }}</h2>
+      <h2>4- {{ newLeast[3] }}</h2>
+      <h2>5- {{ newLeast[4] }}</h2>
     </WelcomeItem>
 
     <WelcomeItem>
