@@ -32,8 +32,41 @@ const getTopStationNamesInLastHour = async (currTime, stationType) => {
   return topStations;
 }
 
+const getMeanDurationBetweenStations = async (req, res) => {
+  const startStationName = req.query.startStationName
+  const endStationName = req.query.endStationName
+  const result = await Ride.aggregate([
+    {
+      $match: {
+        StartStationName: startStationName,
+        EndStationName: endStationName,
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        totalDuration: { $sum: '$TripDuration' },
+        count: { $sum: 1 }
+      }
+    },
+    {
+      $project: {
+        _id: 0,
+        meanDuration: { $divide: ['$totalDuration', '$count'] }
+      }
+    }
+  ]).exec();
+  
+  if (result.length === 0) {
+    return res.json({meanTime: -1});
+  }
+
+  return res.json({meanTime: result[0].meanDuration});
+}
+
 module.exports = {
   getAllRides,
   createRide,
-  getTopStationNamesInLastHour
+  getTopStationNamesInLastHour,
+  getMeanDurationBetweenStations
 };
