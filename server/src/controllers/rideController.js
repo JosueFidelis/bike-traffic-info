@@ -14,9 +14,11 @@ const createRide = async (newRide) => {
 
 const getTopStationNamesInLastHour = async (currTime, stationType) => {
   const hourAgo = new Date(currTime - 60 * 60 * 1000);
+  const refTime = (stationType=="EndStationName") ? "EndTime" : "StartTime";
+
   const topStations = await Ride.aggregate([
     {
-      $match: { EndTime: { $gte: hourAgo } },
+      $match: { [refTime]: { $gte: hourAgo } },
     },
     {
       $group: {
