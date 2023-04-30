@@ -1,6 +1,8 @@
+const express = require('express');
+const routes = require('./routes');
+const cors = require('cors');
 const amqp = require("amqplib/callback_api");
-const mongoose = require("mongoose");
-const {getAllRides, createRide, getTopStationNamesInLastHour} = require("./controllers/rideController");
+const { createRide, getTopStationNamesInLastHour } = require("./controllers/rideController");
 const dbConnect = require('../config/db');
 
 startDb();
@@ -36,7 +38,10 @@ const startConsumer = (connection) => {
         let normalizedJson = normalizeJsonData(msg.content.toString())
         currTime = normalizedJson.EndTime;
         createRide(normalizedJson);
+        await getTopStationNamesInLastHour(currTime, 'StartStationName');
         await getTopStationNamesInLastHour(currTime, 'EndStationName');
+        //let aa = (await getTopStationNamesInLastHour(currTime, 'EndStationName'))[0];
+        //await getStationFlowInLastHour(currTime,'EndStationName', aa);
       },
       {
         noAck: true,
@@ -57,3 +62,11 @@ const checkForError = (err) => {
 async function startDb () {
   await dbConnect();
 }
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+app.use(routes);
+
+app.listen(3333, () => console.log('listening to port 3333'));

@@ -1,5 +1,7 @@
 const Ride = require("../models/ride");
 
+let timeNow = null
+
 const getAllRides = async () => {
   const rides = await Ride.find();
   return rides;
@@ -13,27 +15,86 @@ const createRide = async (newRide) => {
 };
 
 const getTopStationNamesInLastHour = async (currTime, stationType) => {
+  timeNow = currTime
   const hourAgo = new Date(currTime - 60 * 60 * 1000);
   const topStations = await Ride.aggregate([
     {
+      $match: { EndTime: { $gte: hourAgo } },
+    },
+    {
       $group: {
-        _id: '$stationType',
+        _id: "$" + stationType,
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $sort: { count: -1 },
+    },
+    {
+      $limit: 5,
+    },
+  ]);
+
+  const topStationNames = topStations.map((station) => station._id);
+  return topStationNames;
+};
+
+const getStationFlowInLastHour = async (req, res) => {
+  //currTime, stationType, stationName
+  const stationName = req.query.stationName
+  const hourAgo = new Date(timeNow - 60 * 60 * 1000);
+
+  const endCondition = {
+    StartTime: { $gte: hourAgo },
+  };
+  endCondition['StartStationName'] = stationName;
+  const stationDepartures = await Ride.countDocuments(condition);
+  
+  const startCondition = {
+    EndTime: { $gte: hourAgo },
+  };
+  startCondition['EndStationName'] = stationName;
+  const stationArrivals = await Ride.countDocuments(condition);
+
+  return res.json({arrivals: stationArrivals, departures: stationDepartures});
+};
+
+const getMeanDurationBetweenStations = async (req, res) => {
+  const startStationName = req.query.startStationName
+  const endStationName = req.query.endStationName
+  const result = await Ride.aggregate([
+    {
+      $match: {
+        StartStationName: startStationName,
+        EndStationName: endStationName,
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        totalDuration: { $sum: '$TripDuration' },
         count: { $sum: 1 }
       }
     },
     {
-      $sort: { count: -1 } // Sort by count in descending order
-    },
-    {
-      $limit: 5 // Limit to top 5 stations
+      $project: {
+        _id: 0,
+        meanDuration: { $divide: ['$totalDuration', '$count'] }
+      }
     }
-  ]);
-  console.log(topStations);
-  return topStations;
+  ]).exec();
+  
+  if (result.length === 0) {
+    return res.json({meanTime: -1});
+  }
+
+  return res.json({meanTime: result[0].meanDuration});
 }
 
 module.exports = {
   getAllRides,
   createRide,
-  getTopStationNamesInLastHour
+  getTopStationNamesInLastHour,
+  getMeanDurationBetweenStations,
+  getStationFlowInLastHour
 };
