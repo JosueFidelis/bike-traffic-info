@@ -5,10 +5,10 @@ import HelloWorld from './components/HelloWorld.vue'
 <template>
   <div id="app">
     <header>
-      <img alt="Vue logo" class="logo" src="@/assets/rideTOgether.jpg" width="125" height="125" />
+      <img alt="Vue logo" class="logo" src="@/assets/rideTOgether.png" width="125" height="125" />
 
       <div class="wrapper">
-        <HelloWorld msg="rideTOgheter" />
+        <HelloWorld msg="rideTOgether" />
 
         <nav>
           <router-link to="/">Home</router-link>
@@ -30,6 +30,7 @@ header {
 .logo {
   display: block;
   margin: 0 auto 2rem;
+  object-fit:contain;
 }
 
 nav {
@@ -60,6 +61,8 @@ nav a:first-of-type {
 @media (min-width: 1024px) {
   header {
     display: flex;
+    flex-direction:column;
+    justify-content: center;
     place-items: center;
     padding-right: calc(var(--section-gap) / 2);
   }
