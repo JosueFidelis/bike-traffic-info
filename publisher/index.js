@@ -30,6 +30,17 @@ const readCsv = (file) => {
     });
 }
 
+const removeWhiteSpaceFromKeys = (obj) => {
+  Object.keys(obj).forEach((key) => {
+    var replacedKey = key.replace(/\s/g, "");
+    if (key !== replacedKey) {
+       obj[replacedKey] = obj[key];
+       delete obj[key];
+    }
+ });
+ return obj 
+}
+
 amqp.connect('amqp://localhost', (error0, connection) => {
   if (error0) {
     throw error0;
@@ -48,7 +59,8 @@ amqp.connect('amqp://localhost', (error0, connection) => {
         readCsv(fileList[currentFileIndex])
         currentRow = 0;
       } else {
-        channel.sendToQueue(queue, Buffer.from(JSON.stringify(ridesData[currentRow])), {
+        rideToSend = removeWhiteSpaceFromKeys(ridesData[currentRow])
+        channel.sendToQueue(queue, Buffer.from(JSON.stringify(rideToSend)), {
           persistent: true
         });
         currentRow ++;
