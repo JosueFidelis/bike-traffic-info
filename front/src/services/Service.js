@@ -17,7 +17,7 @@ export default {
         return apiClient.get('/mean',{ params: {'startStationName' : station1, 'endStationName' : station2}})
     },
     getStationInfo(station) {
-        return apiClient.get('/info/',{ params: {'station' : station}})
+        return apiClient.get('/station/',{ params: {'station' : station}})
     }
     // getMostStation() {
     //     return apiClient.get('/most')

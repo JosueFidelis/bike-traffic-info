@@ -39,7 +39,7 @@ h3 {
   .greetings h1,
   .greetings h3 {
     display: block;
-    text-align: left;
+    text-align: center;
   }
 }
 </style>

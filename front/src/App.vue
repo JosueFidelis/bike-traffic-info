@@ -68,17 +68,19 @@ nav a:first-of-type {
   }
 
   .logo {
-    margin: 0 2rem 0 0;
+    margin: 0 0 0 0;
   }
 
   header .wrapper {
+    /* font-family:Arial, Helvetica, sans-serif; */
+
     display: flex;
     place-items: flex-start;
     flex-wrap: wrap;
   }
 
   nav {
-    text-align: left;
+    text-align: center;
     margin-left: -1rem;
     font-size: 1rem;
 
