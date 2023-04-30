@@ -1,8 +1,11 @@
 const amqp = require("amqplib/callback_api");
 const mongoose = require("mongoose");
 const Ride = require("./models/Ride");
+const db = require('..config/db');
 
-amqp.connect("amqp://localhost", function (error0, connection) {
+db.connect();
+
+amqp.connect("amqp://localhost", (error0, connection) => {
   checkForError(error0);
   mongoose
     .connect("mongodb://localhost:27017/test")
@@ -15,8 +18,8 @@ amqp.connect("amqp://localhost", function (error0, connection) {
     });
 });
 
-function startConsumer(connection) {
-  connection.createChannel(function (error1, channel) {
+const startConsumer = (connection) => {
+  connection.createChannel((error1, channel) => {
     checkForError(error1);
 
     let queue = "rides";
@@ -27,7 +30,7 @@ function startConsumer(connection) {
 
     channel.consume(
       queue,
-      async function (msg) {
+      async (msg) => {
         console.log(" Novo pedido recebido: %s", msg.content.toString());
         let newRide = JSON.parse(msg.content.toString());
         delete newRide["User Type"]; 
@@ -43,7 +46,7 @@ function startConsumer(connection) {
   });
 }
 
-function checkForError(err) {
+const checkForError = (err) => {
   if (err) {
     console.error(err);
     throw err;

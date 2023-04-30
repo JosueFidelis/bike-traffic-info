@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const RideSchema = mongoose.Schema({
     tripId: String,
@@ -14,4 +14,4 @@ const RideSchema = mongoose.Schema({
 
 const Ride = mongoose.model('Ride', RideSchema);
 
-module.exports = Ride
+module.exports = Ride;
