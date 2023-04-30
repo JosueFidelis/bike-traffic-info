@@ -24,6 +24,7 @@
   width: 220px;
   background-color: rgba(0, 0, 0, 0.04);
   border-radius: 5px;
+  margin-right: 10px;
 }
 
 .bikeInput2 {

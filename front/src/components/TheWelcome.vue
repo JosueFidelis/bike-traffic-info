@@ -111,8 +111,8 @@ export default {
         <DocumentationIcon />
       </template>
       <template #heading>
-        Latest departures and arrivals in the station
-        <input type="text" v-model="infoStation" placeholder="Station" v-on:input="getNewInfo" />
+        Latest departures and arrivals in the station:
+        <input class="bikeInput1" type="text" v-model="infoStation" placeholder="University Ave / Elm St" v-on:input="getNewInfo" />
       </template>
 
       <h2>{{ info.arrivals }}</h2>
