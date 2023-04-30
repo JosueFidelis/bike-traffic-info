@@ -14,10 +14,10 @@ export default {
         return apiClient.get('/users/' + n)
     },
     getMeanTimeBetweenStations(station1, station2) {
-        return apiClient.get('/mean/' + station1 + "_" + station2)
+        return apiClient.get('/mean',{ params: {'startStationName' : station1, 'endStationName' : station2}})
     },
     getStationInfo(station) {
-        return apiClient.get('/info/' + station)
+        return apiClient.get('/info/',{ params: {'station' : station}})
     }
     // getMostStation() {
     //     return apiClient.get('/most')
