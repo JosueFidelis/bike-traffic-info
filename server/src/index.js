@@ -27,9 +27,12 @@ function startConsumer(connection) {
 
     channel.consume(
       queue,
-      function (msg) {
+      async function (msg) {
         console.log(" Novo pedido recebido: %s", msg.content.toString());
-        const ride = new Ride(msg);
+        let newRide = JSON.parse(msg.content.toString());
+        delete newRide["User Type"]; 
+        const ride = new Ride(newRide);
+        await ride.save();
       },
       {
         noAck: true,
