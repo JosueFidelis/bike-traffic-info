@@ -19,32 +19,39 @@ export default {
       mean: [],
       info: []
     }
+  }, computed: {
+    newMost() {
+      var source = new EventSource("http://localhost:9090");
+      source.onmessage = event => {
+        console.log(event.data)
+        this.most = JSON.parse(event.data)['stations'][4]
+      };
+      return this.most
+    },
+    newLeast() {
+      var source = new EventSource("http://localhost:9090");
+      source.onmessage = event => {
+        this.least = JSON.parse(event.data)['stations']
+      };
+      return this.least
+    }
+
   },
   created() {
     BikeServices.getTest(1)
       .then(response => {
-        this.most = response.data['name']
+        this.mean = response.data['name']
       })
       .catch(error => {
         console.log('There was an error:', error.response)
       })
     BikeServices.getTest(2)
       .then(response => {
-        this.least = response.data['name']
+        this.info = response.data['name']
       })
       .catch(error => {
         console.log('There was an error:', error.response)
       })
-  }, computed: {
-    newMean() {
-    var source = new EventSource("http://localhost:9090");
-    source.onmessage = event => {
-            this.mean = event.data
-            this.info = event.data
-    };
-    return this.mean
-    }
-    
   }
 }
 </script>
@@ -54,38 +61,38 @@ export default {
   <div>
     <WelcomeItem>
       <template #icon>
-        <DocumentationIcon />
+        <EcosystemIcon />
       </template>
-      <template #heading>Testing</template>
+      <template #heading>Station with most arrivals last hour </template>
 
-      <a>{{ most }}</a>
-    </WelcomeItem>
-    
-    <WelcomeItem>
-      <template #icon>
-        <DocumentationIcon />
-      </template>
-      <template #heading>Testing</template>
-
-      <a>{{ least }}</a>
+      <h2>{{ newMost }}</h2>
     </WelcomeItem>
 
     <WelcomeItem>
       <template #icon>
-        <DocumentationIcon />
+        <CommunityIcon />
       </template>
-      <template #heading>Testing</template>
+      <template #heading>Station with most departures last hour </template>
 
-      <a>{{ newMean }}</a>
+      <h2>{{ newLeast }}</h2>
+    </WelcomeItem>
+
+    <WelcomeItem>
+      <template #icon>
+        <SupportIcon />
+      </template>
+      <template #heading>Estimated(mean) travel time between stations </template>
+
+      <h2>{{ mean }}</h2>
     </WelcomeItem>
 
     <WelcomeItem>
       <template #icon>
         <DocumentationIcon />
       </template>
-      <template #heading>Testing</template>
+      <template #heading>Latest departures and arrivals in the station</template>
 
-      <a>{{ newMean }}</a>
+      <h2>{{ info }}</h2>
     </WelcomeItem>
 
   </div>
