@@ -1,10 +1,9 @@
 <script setup>
 import BikeStationInfoItem from './BikeStationInfoItem.vue';
-import DocumentationIcon from './icons/IconDocumentation.vue';
-//import ToolingIcon from './icons/IconTooling.vue';
-import EcosystemIcon from './icons/IconEcosystem.vue';
-import CommunityIcon from './icons/IconCommunity.vue';
-import SupportIcon from './icons/IconSupport.vue';
+import ArrowDownRightIcon from './icons/IconArrowDownRight.vue'
+import ArrowUpLeftIcon from './icons/IconArrowUpLeft.vue'
+import ClockIcon from './icons/IconClock.vue'
+import BookIcon from './icons/IconBook.vue'
 </script>
 
 <script>
@@ -64,7 +63,7 @@ export default {
   <div>
     <BikeStationInfoItem>
       <template #icon>
-        <EcosystemIcon />
+        <ArrowDownRightIcon />
       </template>
       <template #heading>Station with most arrivals last hour </template>
 
@@ -75,7 +74,7 @@ export default {
 
     <BikeStationInfoItem>
       <template #icon>
-        <CommunityIcon />
+        <ArrowUpLeftIcon />
       </template>
       <template #heading>Station with most departures last hour </template>
 
@@ -86,7 +85,7 @@ export default {
 
     <BikeStationInfoItem>
       <template #icon>
-        <SupportIcon />
+        <ClockIcon />
       </template>
       <template #heading>
         Mean time between stations<br />
@@ -113,7 +112,7 @@ export default {
 
     <BikeStationInfoItem>
       <template #icon>
-        <DocumentationIcon />
+        <BookIcon />
       </template>
       <template #heading>
         Latest departures and arrivals in the station:
