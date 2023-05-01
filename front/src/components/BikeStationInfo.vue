@@ -19,7 +19,7 @@ export default {
       stationsWithMostBikes: [],
       stationsWithLeastBikes: [],
       mean: [],
-      info: { arrivals: '', departures: '' },
+      info: { arrivals: 0, departures: 0 },
     };
   },
   created(){
@@ -31,7 +31,7 @@ export default {
     };
   },
   computed: {
-    newMean() {
+    meanTimeBetweenStation() {
       BikeServices.getMeanTimeBetweenStations(
         this.meanStation1,
         this.meanStation2
@@ -69,7 +69,7 @@ export default {
       <template #heading>Station with most arrivals last hour </template>
 
       <h2 v-for="(station, index) in stationsWithMostBikes" :key="index">
-        {{ index }}. {{ station }}
+        #{{ index + 1 }} {{ station }}
       </h2>
     </BikeStationInfoItem>
 
@@ -80,7 +80,7 @@ export default {
       <template #heading>Station with most departures last hour </template>
 
       <h2 v-for="(station, index) in stationsWithLeastBikes" :key="index">
-        {{ index }}. {{ station }}
+        #{{ index + 1 }} {{ station }}
       </h2>
     </BikeStationInfoItem>
 
@@ -105,7 +105,10 @@ export default {
         />
       </template>
 
-      <h2>{{ newMean }} segundos</h2>
+      <h2 v-if="meanTimeBetweenStation != -1">
+        {{ meanTimeBetweenStation }} segundos
+      </h2>
+      <h2 v-else>Dados sobre essa busca não foram encontrados</h2>
     </BikeStationInfoItem>
 
     <BikeStationInfoItem>
@@ -123,8 +126,13 @@ export default {
         />
       </template>
 
-      <h2>{{ info.arrivals + ' arrivals' }}</h2>
-      <h2>{{ info.departures + ' departures' }}</h2>
+      <div v-if="info.arrivals != 0 && info.departures != 0">
+        <h2>{{ info.arrivals + ' arrivals' }}</h2>
+        <h2>{{ info.departures + ' departures' }}</h2>
+      </div>
+      <div v-else>
+        <h2>Dados sobre essa busca não foram encontrados</h2>
+      </div>
     </BikeStationInfoItem>
   </div>
 </template>
