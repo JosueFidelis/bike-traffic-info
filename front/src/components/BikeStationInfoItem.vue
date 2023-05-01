@@ -14,8 +14,9 @@
 
 <style scoped>
 .bikeInput1 {
-  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
-    Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
   background: transparent;
   border: none;
   font-size: 1.2rem;
@@ -28,8 +29,9 @@
 }
 
 .bikeInput2 {
-  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
-    Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
   background: transparent;
   border: none;
   font-size: 1.2rem;
@@ -42,7 +44,9 @@
 }
 
 ::placeholder {
-  color: rgba(0, 0, 0, 0.2);
+  font-style: italic;
+  color: rgb(207, 207, 207);
+  font-size: 1rem;
 }
 
 .item {
@@ -67,7 +71,7 @@ i {
 
 h2 {
   color: #FF8673;
-
+  font-size: 1.3rem;
 }
 
 h3 {

@@ -1,6 +1,6 @@
 const Ride = require("../models/ride");
 
-let timeNow = null
+let timeNow = null;
 
 const getAllRides = async () => {
   const rides = await Ride.find();
@@ -9,19 +9,19 @@ const getAllRides = async () => {
 
 const createRide = async (newRide) => {
   delete newRide["UserType"];
-
   const ride = new Ride(newRide);
-  await ride.save().then(console.log(" Saved new Ride: " + newRide["TripId"]));
+  await ride.save()
+    .then(console.log(" [MongoDB] Saved new Ride: " + newRide["TripId"]));
 };
 
 const getTopStationNamesInLastHour = async (currTime, stationType) => {
-  timeNow = currTime
+  timeNow = currTime;
   const hourAgo = new Date(currTime - 60 * 60 * 1000);
-  const refTime = (stationType=="EndStationName") ? "EndTime" : "StartTime";
+  const refTime = stationType == "EndStationName" ? "EndTime" : "StartTime";
 
   const topStations = await Ride.aggregate([
     {
-      $match: { [refTime]: { $gte: hourAgo } },
+      $match: { [refTime]: { $gte: hourAgo }, [stationType]: { $ne: "NULL" } },
     },
     {
       $group: {
@@ -33,72 +33,70 @@ const getTopStationNamesInLastHour = async (currTime, stationType) => {
       $sort: { count: -1 },
     },
     {
-      $limit: 10,
+      $limit: 5,
     },
   ]);
-  const topStationNames = topStations
-  .filter((station) => station._id && station._id !== "NULL") // Remove os valores null e vazios
-  .map((station) => station._id)
-  .slice(0, 5);
+  const topStationNames = topStations.map((station) => station._id);
+
   return topStationNames;
 };
 
 const getStationFlowInLastHour = async (req, res) => {
   //currTime, stationType, stationName
-  const stationName = req.query.station
+  const stationName = req.query.station;
   const hourAgo = new Date(timeNow - 60 * 60 * 1000);
 
   const endCondition = {
     StartTime: { $gte: hourAgo },
   };
-  endCondition['StartStationName'] = stationName;
+  endCondition["StartStationName"] = stationName;
   const stationDepartures = await Ride.countDocuments(endCondition);
-  
+
   const startCondition = {
     EndTime: { $gte: hourAgo },
   };
-  startCondition['EndStationName'] = stationName;
+  startCondition["EndStationName"] = stationName;
   const stationArrivals = await Ride.countDocuments(startCondition);
 
-  return res.json({arrivals: stationArrivals, departures: stationDepartures});
+  return res.json({ arrivals: stationArrivals, departures: stationDepartures });
 };
 
 const getMeanDurationBetweenStations = async (req, res) => {
-  const startStationName = req.query.startStationName
-  const endStationName = req.query.endStationName
+  const startStationName = req.query.startStationName;
+  const endStationName = req.query.endStationName;
   const result = await Ride.aggregate([
     {
       $match: {
         StartStationName: startStationName,
         EndStationName: endStationName,
-      }
+      },
     },
     {
       $group: {
         _id: null,
-        totalDuration: { $sum: '$TripDuration' },
-        count: { $sum: 1 }
-      }
+        totalDuration: { $sum: "$TripDuration" },
+        count: { $sum: 1 },
+      },
     },
     {
       $project: {
         _id: 0,
-        meanDuration: { $divide: ['$totalDuration', '$count'] }
-      }
-    }
+        meanDuration: { $divide: ["$totalDuration", "$count"] },
+      },
+    },
   ]).exec();
-  
+
   if (result.length === 0) {
-    return res.json({meanTime: -1});
+    return res.json({ meanTime: -1 });
   }
 
-  return res.json({meanTime: result[0].meanDuration});
-}
+  return res.json({ meanTime: result[0].meanDuration });
+};
 
 module.exports = {
   getAllRides,
   createRide,
   getTopStationNamesInLastHour,
   getMeanDurationBetweenStations,
-  getStationFlowInLastHour
+  getStationFlowInLastHour,
 };
