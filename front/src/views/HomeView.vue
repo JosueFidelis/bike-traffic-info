@@ -1,9 +1,9 @@
 <script setup>
-import TheWelcome from '@/components/TheWelcome.vue'
+import BikeStationInfo from '@/components/BikeStationInfo.vue';
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <BikeStationInfo />
   </main>
 </template>
