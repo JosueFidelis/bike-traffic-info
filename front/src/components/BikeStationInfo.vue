@@ -100,12 +100,13 @@ export default {
           class="bikeInput2"
           type="text"
           v-model="meanStation2"
-          placeholder="University Ave / Elm St"
+          placeholder="Bathurst St / Dundas St W"
         />
       </template>
 
-      <h2 v-if="meanTimeBetweenStation != -1">
-        {{ meanTimeBetweenStation }} segundos
+      <h2 v-if="meanTimeBetweenStation != -1 ">
+        <template v-if=" meanTimeBetweenStation >= 60">{{ Math.floor(meanTimeBetweenStation/60) }} minutos e </template>
+        <template v-if=" (Math.floor(meanTimeBetweenStation) % 60) != 0">{{ Math.floor(meanTimeBetweenStation % 60) }} segundos</template>
       </h2>
       <h2 v-else>Dados sobre essa busca não foram encontrados</h2>
     </BikeStationInfoItem>
@@ -120,7 +121,7 @@ export default {
           class="bikeInput1"
           type="text"
           v-model="infoStation"
-          placeholder="University Ave / Elm St"
+          placeholder="Union Station"
           v-on:input="getNewInfo"
         />
       </template>
